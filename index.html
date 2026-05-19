@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Soch Foundation</title>
+<meta name="description" content="Soch Foundation — A trust advancing critical thought, social justice, and legal empowerment through research, advocacy, and action." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --ink: #111009;
+    --paper: #F5F0E8;
+    --cream: #EDE7D7;
+    --rust: #C4511A;
+    --rust-light: #E8733A;
+    --muted: #6B6456;
+    --border: #D4CCB8;
+    --white: #FDFAF4;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.35;
+  }
+
+  /* ─── NAVBAR ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+    height: 72px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s;
+  }
+
+  nav.scrolled { box-shadow: 0 2px 24px rgba(17,16,9,0.08); }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+
+  .nav-logo img {
+    height: 36px;
+    width: auto;
+  }
+
+  .nav-wordmark {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--rust); }
+
+  .nav-cta {
+    background: var(--ink) !important;
+    color: var(--paper) !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 2px;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--rust) !important; color: var(--white) !important; }
+
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+    background: var(--ink);
+    transition: all 0.3s;
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(3rem, 8vw, 7rem) clamp(2rem, 5vw, 5rem);
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--rust);
+  }
+
+  .hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--ink);
+    margin-bottom: 2rem;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--rust);
+  }
+
+  .hero-body {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--rust);
+    color: var(--white);
+    padding: 0.85rem 2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--ink); transform: translateY(-1px); }
+
+  .btn-outline {
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    padding: 0.85rem 2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: sepia(0.2) contrast(1.05);
+  }
+
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--paper) 0%, transparent 20%);
+  }
+
+  .hero-ticker {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.65rem 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    overflow: hidden;
+    z-index: 10;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 4rem;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-track span { opacity: 0.6; }
+  .ticker-track strong { color: var(--rust-light); font-weight: 400; }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── SECTION LAYOUT ─── */
+  section {
+    padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--rust);
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading em { font-style: italic; color: var(--rust); }
+
+  /* ─── DIVIDER ─── */
+  .full-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 0;
+  }
+
+  /* ─── ABOUT / PILLARS ─── */
+  #about {
+    background: var(--ink);
+    max-width: 100%;
+    padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 5rem);
+  }
+
+  .about-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  #about .section-label { color: var(--rust-light); }
+  #about .section-label::before { background: var(--rust-light); }
+  #about .section-heading { color: var(--paper); }
+
+  .about-text {
+    font-size: 1.05rem;
+    color: rgba(245,240,232,0.7);
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-text strong { color: var(--paper); font-weight: 500; }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.08);
+  }
+
+  .pillar {
+    background: var(--ink);
+    padding: 2rem 1.75rem;
+    border: none;
+    transition: background 0.3s;
+    cursor: default;
+  }
+
+  .pillar:hover { background: #1C1A10; }
+
+  .pillar-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+
+  .pillar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 0.6rem;
+  }
+
+  .pillar-desc {
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.7;
+  }
+
+  /* ─── WORK ─── */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  .work-card {
+    background: var(--white);
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+  }
+
+  .work-card:hover { background: var(--cream); }
+
+  .work-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .work-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .work-body {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ─── EVENTS ─── */
+  #events { background: var(--cream); max-width: 100%; padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 5rem); }
+  .events-inner { max-width: 1280px; margin: 0 auto; }
+
+  .events-list { margin-top: 3rem; }
+
+  .event-item {
+    display: grid;
+    grid-template-columns: 120px 1fr 320px;
+    gap: 2.5rem;
+    align-items: start;
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .event-item:last-child { border-bottom: 1px solid var(--border); }
+
+  .event-date {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--rust);
+    padding-top: 0.2rem;
+    line-height: 1.5;
+  }
+
+  .event-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+    line-height: 1.3;
+  }
+
+  .event-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .event-img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    filter: sepia(0.15) contrast(1.05);
+    transition: filter 0.3s;
+  }
+
+  .event-item:hover .event-img { filter: sepia(0) contrast(1.05); }
+
+  /* ─── SPEAKERS ─── */
+  .speakers-section { margin-top: 4rem; padding-top: 4rem; border-top: 1px solid var(--border); }
+
+  .speakers-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .speakers-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .speaker-tag {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+
+  .speaker-tag:hover { background: var(--rust); color: var(--white); border-color: var(--rust); }
+
+  /* ─── TEAM ─── */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-top: 3rem;
+  }
+
+  .team-card {
+    background: var(--white);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .team-photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(0.3) sepia(0.1);
+    display: block;
+    transition: filter 0.4s;
+  }
+
+  .team-card:hover .team-photo { filter: grayscale(0) sepia(0); }
+
+  .team-info {
+    padding: 1.25rem 1.25rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .team-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .team-bio {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ─── PARTNERS ─── */
+  #partners { background: var(--ink); max-width: 100%; padding: 3.5rem clamp(1.5rem, 5vw, 5rem); }
+  .partners-inner { max-width: 1280px; margin: 0 auto; }
+  .partners-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 2rem; }
+
+  .partners-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .partner-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.5);
+    padding: 0.4rem 0.9rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .partner-name:hover { color: var(--paper); border-color: rgba(255,255,255,0.3); }
+
+  /* ─── BLOG ─── */
+  #blog { background: var(--ink); max-width: 100%; padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 5rem); }
+  .blog-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  #blog .section-label { color: var(--rust-light); }
+  #blog .section-label::before { background: var(--rust-light); }
+  #blog .section-heading { color: var(--paper); }
+
+  .blog-philosophy {
+    font-size: 1rem;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-philosophy strong { color: var(--paper); font-weight: 500; }
+
+  .blog-submit-box {
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 2.5rem;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .blog-submit-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--paper);
+    margin-bottom: 1.25rem;
+  }
+
+  .blog-guidelines {
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+
+  .blog-guidelines li {
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.7;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .blog-guidelines li::before {
+    content: '—';
+    color: var(--rust-light);
+    flex-shrink: 0;
+  }
+
+  .blog-submit-note {
+    font-size: 0.78rem;
+    color: rgba(245,240,232,0.4);
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-blog {
+    display: inline-block;
+    background: var(--rust);
+    color: var(--white);
+    padding: 0.85rem 2rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-blog:hover { background: var(--rust-light); }
+
+  @media (max-width: 900px) {
+    .blog-inner { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    margin-top: 3rem;
+  }
+
+  .contact-info p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 2rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--ink);
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    background: var(--white);
+  }
+
+  .contact-link:hover { border-color: var(--rust); color: var(--rust); background: var(--cream); }
+
+  .contact-link span { font-size: 1rem; }
+
+  .contact-form {}
+
+  .form-row { margin-bottom: 1.25rem; }
+
+  .form-label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus { border-color: var(--rust); }
+
+  .form-textarea { height: 120px; resize: vertical; }
+
+  .form-submit {
+    background: var(--rust);
+    color: var(--white);
+    border: none;
+    padding: 0.85rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .form-submit:hover { background: var(--ink); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #0A0900;
+    padding: 3rem clamp(1.5rem, 5vw, 5rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .footer-logo img { height: 28px; filter: invert(1) sepia(1) saturate(0) brightness(0.7); }
+
+  .footer-wordmark {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-social a {
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    transition: color 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .footer-social a:hover { color: var(--rust-light); }
+
+  /* ─── ANIMATIONS ─── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── MOBILE MENU ─── */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--paper);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    padding-top: 72px;
+  }
+
+  .mobile-menu.open { display: flex; }
+
+  .mobile-menu a {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .mobile-menu a:hover { color: var(--rust); }
+
+  .mobile-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink);
+    padding: 0.5rem;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { height: 50vw; max-height: 400px; }
+    .hero-right::after { background: linear-gradient(to bottom, var(--paper) 0%, transparent 15%); }
+    .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .pillars { grid-template-columns: 1fr 1fr; }
+    .work-grid { grid-template-columns: 1fr 1fr; }
+    .event-item { grid-template-columns: 1fr; gap: 1rem; }
+    .event-date { padding-top: 0; }
+    .event-img { max-width: 100%; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+  }
+
+  @media (max-width: 600px) {
+    .work-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .pillars { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <img src="images/logo.png" alt="Soch Foundation" />
+    <span class="nav-wordmark">Soch Foundation</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Our Work</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#contact" class="nav-cta">Connect</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#work" class="mobile-link">Our Work</a>
+  <a href="#events" class="mobile-link">Events</a>
+  <a href="#team" class="mobile-link">Team</a>
+  <a href="#blog" class="mobile-link">Blog</a>
+  <a href="#contact" class="mobile-link">Connect</a>
+</div>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow fade-up">Registered Trust · Est. 2025</div>
+    <h1 class="hero-headline fade-up">
+      Think.<br/>
+      <em>Question.</em><br/>
+      Act.
+    </h1>
+    <p class="hero-body fade-up">
+      Soch Foundation advances critical thought, legal empowerment, and social justice — through rigorous research, public discourse, and direct action on the ground.
+    </p>
+    <div class="hero-actions fade-up">
+      <a href="#work" class="btn-primary">Our Work</a>
+      <a href="#events" class="btn-outline">Past Events</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="images/event2.jpg" alt="Soch Foundation event" />
+  </div>
+  <div class="hero-ticker">
+    <div class="ticker-track">
+      <span>Critical Discourse</span>
+      <strong>◆</strong>
+      <span>Legal Aid &amp; Awareness</span>
+      <strong>◆</strong>
+      <span>Policy Research</span>
+      <strong>◆</strong>
+      <span>Social Justice</span>
+      <strong>◆</strong>
+      <span>Labour Rights</span>
+      <strong>◆</strong>
+      <span>Access to Justice</span>
+      <strong>◆</strong>
+      <span>Sex Workers' Rights</span>
+      <strong>◆</strong>
+      <span>Mental Health Awareness</span>
+      <strong>◆</strong>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <span>Critical Discourse</span>
+      <strong>◆</strong>
+      <span>Legal Aid &amp; Awareness</span>
+      <strong>◆</strong>
+      <span>Policy Research</span>
+      <strong>◆</strong>
+      <span>Social Justice</span>
+      <strong>◆</strong>
+      <span>Labour Rights</span>
+      <strong>◆</strong>
+      <span>Access to Justice</span>
+      <strong>◆</strong>
+      <span>Sex Workers' Rights</span>
+      <strong>◆</strong>
+      <span>Mental Health Awareness</span>
+      <strong>◆</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about">
+  <div class="about-inner">
+    <div>
+      <div class="section-label">About Soch Foundation</div>
+      <h2 class="section-heading">Both a think tank<br/><em>and a doer</em></h2>
+      <p class="about-text">
+        Soch Foundation is an independent public trust that sits at the intersection of intellectual inquiry and social action. We were founded by a group of law students who believed that rigorous thought and real-world impact are not just compatible — they are inseparable.
+      </p>
+      <p class="about-text">
+        We bring together <strong>students, graduates, researchers, and practitioners</strong> from across India to foster critical discourse, drive policy research, and deliver direct legal empowerment to communities that need it most.
+      </p>
+      <p class="about-text">
+        Today, Soch is expanding beyond its founding institution to other premier law schools and universities, building a national network of people committed to justice, inquiry, and change.
+      </p>
+    </div>
+    <div class="pillars fade-up">
+      <div class="pillar">
+        <div class="pillar-icon">🔬</div>
+        <div class="pillar-title">Research & Policy</div>
+        <div class="pillar-desc">Rigorous inquiry into legal, political, and social questions — from labour rights to digital governance.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎙️</div>
+        <div class="pillar-title">Public Discourse</div>
+        <div class="pillar-desc">Lectures, panels, and workshops that bring diverse perspectives into conversation with each other.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">⚖️</div>
+        <div class="pillar-title">Legal Aid & Action</div>
+        <div class="pillar-desc">Awareness campaigns, outreach clinics, and tools that put legal knowledge in the hands of those who need it.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🌐</div>
+        <div class="pillar-title">Network & Community</div>
+        <div class="pillar-desc">A growing community of engaged students, alumni, and professionals united by shared values.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-label">What We Do</div>
+  <h2 class="section-heading">From ideas to <em>impact</em></h2>
+  <div class="work-grid fade-up">
+    <div class="work-card">
+      <div class="work-number">01</div>
+      <div class="work-title">Critical Discourse & Education</div>
+      <div class="work-body">We convene conversations that matter — with scholars, policymakers, lawyers, and activists. Our workshops and speaker series push students to engage deeply with law, political economy, sociology, and beyond.</div>
+    </div>
+    <div class="work-card">
+      <div class="work-number">02</div>
+      <div class="work-title">Handbook for Sex Workers</div>
+      <div class="work-body">We played an instrumental role in producing a legal resource handbook for sex workers, and co-organised a roundtable consultation bringing together legal experts, policymakers, activists, and sex workers themselves.</div>
+    </div>
+    <div class="work-card">
+      <div class="work-number">03</div>
+      <div class="work-title">Labour & Policy Research</div>
+      <div class="work-body">We engage in research and advocacy on labour law, workers' rights, and social policy — connecting academic rigour with the lived realities of marginalised communities.</div>
+    </div>
+    <div class="work-card">
+      <div class="work-number">04</div>
+      <div class="work-title">Legal Awareness Campaigns</div>
+      <div class="work-body">Pro bono legal aid drives, rights and entitlements awareness camps, and targeted outreach to communities that lack access to legal information and recourse.</div>
+    </div>
+    <div class="work-card">
+      <div class="work-number">05</div>
+      <div class="work-title">Mental Health Advocacy</div>
+      <div class="work-body">Promoting awareness and destigmatisation of mental health, particularly among students and young professionals in high-pressure academic and professional environments.</div>
+    </div>
+    <div class="work-card">
+      <div class="work-number">06</div>
+      <div class="work-title">Building the Soch Network</div>
+      <div class="work-body">We're expanding to law schools and universities across India — creating a national network of critically engaged students and graduates committed to social change.</div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- EVENTS -->
+<div id="events">
+  <div class="events-inner">
+    <div class="section-label">Events & Initiatives</div>
+    <h2 class="section-heading">Where thought <em>meets action</em></h2>
+
+    <div class="events-list">
+
+      <!-- Event 1 -->
+      <div class="event-item fade-up">
+        <div class="event-date">August 11<br/>2025</div>
+        <div>
+          <div class="event-title">Fear and Freedom of Speech</div>
+          <div class="event-desc">
+            Soch's first fully independent session brought together Prof. Anup Surendranath and Mr. Sanjoy Roy for a frank conversation on free expression in India. The session explored how fear — of trolling, censorship, or arrest — quietly shapes what people feel safe to say, write, or express. A timely reminder that freedom of speech is a fragile practice that survives only when exercised.
+          </div>
+        </div>
+        <img class="event-img" src="images/event1.avif" alt="Fear and Freedom of Speech event" />
+      </div>
+
+      <!-- Event Ikigai -->
+      <div class="event-item fade-up">
+        <div class="event-date">Mid<br/>2024</div>
+        <div>
+          <div class="event-title">Ikigai Law — Unpacking the DPDP Act</div>
+          <div class="event-desc">
+            Soch teamed up with Ikigai Law for a session unpacking India's newly minted Digital Personal Data Protection Act. What could've been a dry legal breakdown turned into a genuinely fun, super relevant conversation about what the Act means for everyday digital life — from what happens to our data when we mindlessly click 'Accept' to bigger questions around digital public infrastructure and the impact on various stakeholders. The session saw a great mix of participants and wrapped up with a lively Q&amp;A where no question was too basic or too wild. This was preceded by an important online discussion with the founder of Ikigai Law, Mr. Anirudh Rastogi, on careers in law.
+          </div>
+        </div>
+        <img class="event-img" src="images/event-ikigai.jpg" alt="Ikigai Law DPDP session" />
+      </div>
+
+      <!-- Event 2 -->
+      <div class="event-item fade-up">
+        <div class="event-date">October 19<br/>2024</div>
+        <div>
+          <div class="event-title">Round Table Consultation: Handbook for Sex Workers</div>
+          <div class="event-desc">
+            A pivotal consultation bringing together legal experts, policymakers, academicians, activists, advocates, and sex workers to address the legal and social challenges faced by the community in India. This collaborative effort marks a meaningful step toward securing dignity, equality, and protection for all individuals, regardless of profession or background.
+          </div>
+        </div>
+        <img class="event-img" src="images/event2.webp" alt="Round Table Consultation event" />
+      </div>
+
+      <!-- Event 3 -->
+      <div class="event-item fade-up">
+        <div class="event-date">March 20<br/>2024</div>
+        <div>
+          <div class="event-title">Dr. Usha Ramanathan — "Philosophy for Technology"</div>
+          <div class="event-desc">
+            Renowned legal scholar Dr. Usha Ramanathan explored the philosophical and regulatory dimensions of technology — examining how emerging technological frameworks intersect with law, society, and individual rights. A compelling argument for critical engagement with the values embedded in how technology is built and governed.
+          </div>
+        </div>
+        <img class="event-img" src="images/event3.jpg" alt="Dr. Usha Ramanathan lecture" />
+      </div>
+
+      <!-- Event 4 -->
+      <div class="event-item fade-up">
+        <div class="event-date">August 23<br/>2023</div>
+        <div>
+          <div class="event-title">Devashish Dhar — "Indian Cities: History and Path Ahead"</div>
+          <div class="event-desc">
+            Drawing from his book <em>India's Blind Spot</em>, Devashish Dhar framed cities as humankind's longest-running social experiment. A wide-ranging conversation on urban governance, infrastructure gaps, and the everyday chaos and potential of Indian cities — co-hosted with the Centre for Law and Urban Development.
+          </div>
+        </div>
+        <img class="event-img" src="images/event4.jpg" alt="Devashish Dhar lecture" />
+      </div>
+
+      <!-- Event 5 -->
+      <div class="event-item fade-up">
+        <div class="event-date">April 10<br/>2023</div>
+        <div>
+          <div class="event-title">Lord Meghnad Desai — "The Poverty of Political Economy"</div>
+          <div class="event-desc">
+            A two-hour conversation with Lord Meghnad Desai on the political and economic currents shaping India. From the state of agriculture and the farmers' rights movement to the limits of dominant economic theories in explaining India's growth story — a session that set the intellectual tone for everything that followed.
+          </div>
+        </div>
+        <img class="event-img" src="images/event5.jpg" alt="Lord Meghnad Desai lecture" />
+      </div>
+
+    </div>
+
+    <!-- Committed Speakers -->
+    <div class="speakers-section fade-up">
+      <div class="speakers-heading">Past &amp; Committed Speakers</div>
+      <div class="speakers-grid">
+        <div class="speaker-tag">Lord Meghnad Desai</div>
+        <div class="speaker-tag">Dr. Usha Ramanathan</div>
+        <div class="speaker-tag">Devashish Dhar</div>
+        <div class="speaker-tag">Anirudh Rastogi</div>
+        <div class="speaker-tag">Prof. Anup Surendranath</div>
+        <div class="speaker-tag">Sanjoy Roy</div>
+        <div class="speaker-tag">Gayathri Spivak *</div>
+      </div>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:1rem;font-family:'DM Mono',monospace;letter-spacing:0.05em;">* Commitment confirmed, upcoming</p>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-label">The People</div>
+  <h2 class="section-heading">Built by those who <em>care</em></h2>
+  <div class="team-grid fade-up">
+
+    <div class="team-card">
+      <img class="team-photo"
+        src="images/team-vatsal.jpg"
+        alt="Vatsal Jindel" />
+      <div class="team-info">
+        <div class="team-name">Vatsal Jindel</div>
+        <div class="team-bio">Founder. Loves big questions and conversations that go off-track in the best possible way.</div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img class="team-photo"
+        src="images/team-mansha.jpg"
+        alt="Mansha Sidhu" />
+      <div class="team-info">
+        <div class="team-name">Mansha Sidhu</div>
+        <div class="team-bio">If you contact Soch, she's most likely to reply. Interested in legal policy, research, and access to justice.</div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img class="team-photo"
+        src="images/team-ishaany.jpg"
+        alt="Ishaany" />
+      <div class="team-info">
+        <div class="team-name">Ishaany</div>
+        <div class="team-bio">The creative backbone of Soch — brings light, colour, and humour. Interested in feminist legal perspectives and access to justice.</div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img class="team-photo"
+        src="images/team-anas.jpg"
+        alt="Anas Khan Rayeen" />
+      <div class="team-info">
+        <div class="team-name">Anas Khan Rayeen</div>
+        <div class="team-bio">The logistical backbone. Impeccable taste, enviable attention to detail — the reason events actually happen.</div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img class="team-photo"
+        src="images/team-gunjan.jpg"
+        alt="Gunjan Singh Khandate" />
+      <div class="team-info">
+        <div class="team-name">Gunjan Singh Khandate</div>
+        <div class="team-bio">Passionate about economic theory, highways, music, and literature. Will not miss an opportunity to make his point.</div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img class="team-photo"
+        src="images/team-siddhartha.jpg"
+        alt="Siddhartha Das" />
+      <div class="team-info">
+        <div class="team-name">Siddhartha Das</div>
+        <div class="team-bio">Chess, cinema, law, and food. Passionate about litigation and policy research, with an eye on real-world impact.</div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img class="team-photo"
+        src="images/team-aakash.jpg"
+        alt="Aakash DB" />
+      <div class="team-info">
+        <div class="team-name">Aakash DB</div>
+        <div class="team-bio">Go-to for anything tech and everything nice. Somehow knows everyone — if you need a solution, he's your person.</div>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <img class="team-photo"
+        src="images/team-praddosh.jpg"
+        alt="Praddosh" />
+      <div class="team-info">
+        <div class="team-name">Praddosh</div>
+        <div class="team-bio">That over-excited, hard-working guy who volunteers for everything — from website design to drafting documents (on which the rest of us now count on). Too humble (lazy?) to write his own bio, so one of us had to step in. Annoying for his dedication but utterly indispensable.</div>
+      </div>
+    </div>
+
+    <div class="team-card" style="background:var(--cream);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:3rem 2rem;text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--border);margin-bottom:1rem;">+</div>
+      <div class="team-name">Join the Network</div>
+      <div class="team-bio" style="margin-top:0.4rem;">We're expanding. If you're a student or graduate committed to justice and inquiry, <a href="#contact" style="color:var(--rust);text-underline-offset:3px;">we'd love to hear from you.</a></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- BLOG -->
+<div id="blog">
+  <div class="blog-inner">
+    <div>
+      <div class="section-label">The Soch Blog</div>
+      <h2 class="section-heading">A space for <em>honest thought</em></h2>
+      <p class="blog-philosophy">
+        The Soch Blog is a platform for students, thinkers, writers, and readers to reflect on questions of public life, policy, and society — in a way that is <strong>honest, accessible, and rooted in the present.</strong>
+      </p>
+      <p class="blog-philosophy">
+        We see it as a bridge between disciplines, and between thought and action. Law, economics, environment, politics, technology, identity — any lens through which you engage seriously with the world around you.
+      </p>
+      <p class="blog-philosophy">
+        We also welcome essays that raise questions without providing solutions. Challenge assumptions, provoke thought, remain grounded.
+      </p>
+    </div>
+    <div class="blog-submit-box fade-up">
+      <div class="blog-submit-title">Submit a Piece</div>
+      <ul class="blog-guidelines">
+        <li>Write as if for a curious high-school student — clear, direct, no unnecessary jargon</li>
+        <li>Conversational but reflective in tone; first-person welcome where it strengthens authenticity</li>
+        <li>Ground abstract ideas in real events, examples, or lived experience</li>
+        <li>Any discipline: law, economics, environment, politics, literature, technology, identity</li>
+        <li>Essays that raise questions without resolving them are equally welcome</li>
+        <li>Joint authorship of up to two people is allowed</li>
+      </ul>
+      <div class="blog-submit-note">
+        Send a .docx attachment to hello@sochnetwork.in with a short title and a one-line author bio. Each submission is reviewed collaboratively — the writer will be part of the finalisation process.
+      </div>
+      <a href="mailto:hello@sochnetwork.in?subject=Blog Submission — Soch Foundation" class="btn-blog">Submit Your Piece</a>
+    </div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get in Touch</div>
+  <h2 class="section-heading">Let's build something <em>together</em></h2>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>Whether you're a student wanting to get involved, an institution interested in collaboration, a researcher looking for a home for your ideas, or someone who simply wants to follow the work — we want to hear from you.</p>
+      <div class="contact-links">
+        <a href="mailto:hello@sochnetwork.in" class="contact-link">
+          <span>✉</span> hello@sochnetwork.in
+        </a>
+        <a href="https://www.instagram.com/soch__foundation" target="_blank" rel="noopener" class="contact-link">
+          <span>📷</span> @soch__foundation on Instagram
+        </a>
+        <a href="https://www.linkedin.com/company/sochfoundationindia" target="_blank" rel="noopener" class="contact-link">
+          <span>💼</span> Soch Foundation on LinkedIn
+        </a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-row">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" placeholder="Full name" />
+      </div>
+      <div class="form-row">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="you@example.com" />
+      </div>
+      <div class="form-row">
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Tell us what you're working on, or just say hello."></textarea>
+      </div>
+      <button class="form-submit">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <img src="images/logo.png" alt="Soch Foundation" />
+    <span class="footer-wordmark">Soch Foundation</span>
+  </div>
+  <span class="footer-copy">© Soch Foundation 2025. Registered Public Trust.</span>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/soch__foundation" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.linkedin.com/company/sochfoundationindia" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+  // Scroll-spy navbar
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Stagger children of fade-up containers
+  document.querySelectorAll('.work-grid .work-card, .pillars .pillar, .team-grid .team-card').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 4) * 80}ms`;
+  });
+
+  // Contact form (no-op for static)
+  document.querySelector('.form-submit').addEventListener('click', () => {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = 'Message Sent ✓';
+    btn.style.background = '#2A7A2A';
+    setTimeout(() => {
+      btn.textContent = 'Send Message';
+      btn.style.background = '';
+    }, 3000);
+  });
+</script>
+
+</body>
+</html>
